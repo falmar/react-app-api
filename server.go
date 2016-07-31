@@ -1,0 +1,28 @@
+// Copyright 2016 David Lavieri.  All rights reserved.
+// Use of this source code is governed by a MIT License
+// License that can be found in the LICENSE file.
+
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/julienschmidt/httprouter"
+)
+
+func main() {
+	routerWrapper := newRouterWrapper(
+		httprouter.New(),
+	)
+
+	// routes.go
+	setRoutes(routerWrapper)
+
+	// cros_handler.go
+	cors := CORS{routerWrapper.router}
+
+	log.Fatal(
+		http.ListenAndServe(":8080", cors),
+	)
+}
