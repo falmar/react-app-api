@@ -140,4 +140,19 @@ func TestJSONResponseEncodeStruct(t *testing.T) {
 	}
 }
 
+func TestJSONResponseEncodeBadParameter(t *testing.T) {
+	var err error
+	var parseFrom = map[int]string{
+		1: "hello",
+	}
+
+	body := bytes.NewBuffer([]byte{})
+
+	err = jsonResponseEncode(body, parseFrom)
+
+	if err == nil {
+		t.Fatalf("Expected Error to NOT be nil; Got: %v", err)
+	}
+}
+
 // ------------------ End jsonResponseEncode
