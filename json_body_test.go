@@ -4,48 +4,18 @@
 
 package main
 
-import "testing"
-
-// -------------- RequestBodyMock
-type RequestBodyMock struct {
-	body []byte
-}
-
-func (frb RequestBodyMock) Read(p []byte) (int, error) {
-	var n int
-
-	n = copy(p, frb.body)
-
-	return n, nil
-}
-
-func (frb RequestBodyMock) Close() error {
-	return nil
-}
-
-// ------------------ End Mock
-
-// -------------- RequestBodyMock
-type ResponseBodyMock struct {
-	body []byte
-}
-
-func (frb *ResponseBodyMock) Write(p []byte) (int, error) {
-	frb.body = p
-
-	return len(p), nil
-}
-
-// ------------------ End Mock
+import (
+	"bytes"
+	"testing"
+)
 
 // ------------------ jsonRequestDecode
 
 func TestJSONRequestDecodeMap(t *testing.T) {
 	var err error
-	var body RequestBodyMock
 	var parseInto map[string]string
 
-	body.body = []byte(`{"username": "something", "name": "who knows"}`)
+	body := bytes.NewBuffer([]byte(`{"username": "something", "name": "who knows"}`))
 
 	var expectedValue = map[string]string{
 		"username": "something",
@@ -74,7 +44,6 @@ func TestJSONRequestDecodeMap(t *testing.T) {
 
 func TestJSONRequestDecodeStruct(t *testing.T) {
 	var err error
-	var body RequestBodyMock
 	var parseInto struct {
 		Username string `json:"username"`
 		Name     string `json:"name"`
@@ -87,7 +56,7 @@ func TestJSONRequestDecodeStruct(t *testing.T) {
 		"welp", "nope",
 	}
 
-	body.body = []byte(`{"username": "welp", "name": "nope"}`)
+	body := bytes.NewBuffer([]byte(`{"username": "welp", "name": "nope"}`))
 
 	err = jsonRequestDecode(body, &parseInto)
 
@@ -108,10 +77,9 @@ func TestJSONRequestDecodeStruct(t *testing.T) {
 
 func TestJSONRequestDecodeError(t *testing.T) {
 	var err error
-	var body RequestBodyMock
 	var parseInto interface{}
 
-	body.body = []byte(`{"username": "ops error an here, "name": "who knows"}`)
+	body := bytes.NewBuffer([]byte(`{"username": "ops error an here, "name": "who knows"}`))
 
 	err = jsonRequestDecode(body, &parseInto)
 
@@ -126,11 +94,15 @@ func TestJSONRequestDecodeError(t *testing.T) {
 
 func TestJSONResponseEncodeMap(t *testing.T) {
 	var err error
-	var body = &ResponseBodyMock{}
 	var parseFrom = map[string]string{
-		"username": "robocop?",
 		"name":     "iron man. lol!",
+		"username": "robocop?",
 	}
+
+	var expectedValue = []byte(`{"name":"iron man. lol!","username":"robocop?"}
+`)
+
+	body := bytes.NewBuffer([]byte{})
 
 	err = jsonResponseEncode(body, parseFrom)
 
@@ -138,14 +110,13 @@ func TestJSONResponseEncodeMap(t *testing.T) {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
 
-	if len(body.body) == 0 {
-		t.Fatal("Body should not be empty")
+	if !bytes.Equal(body.Bytes(), expectedValue) {
+		t.Fatalf("Expected body: %s; Got: %s", expectedValue, body.String())
 	}
 }
 
 func TestJSONResponseEncodeStruct(t *testing.T) {
 	var err error
-	var body ResponseBodyMock
 	var parseFrom = struct {
 		Username string `json:"username"`
 		Name     string `json:"name"`
@@ -153,14 +124,19 @@ func TestJSONResponseEncodeStruct(t *testing.T) {
 		"welp", "nope",
 	}
 
-	err = jsonResponseEncode(&body, parseFrom)
+	var expectedValue = []byte(`{"username":"welp","name":"nope"}
+`)
+
+	body := bytes.NewBuffer([]byte{})
+
+	err = jsonResponseEncode(body, parseFrom)
 
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
 
-	if len(body.body) == 0 {
-		t.Fatal("Body should not be empty")
+	if !bytes.Equal(body.Bytes(), expectedValue) {
+		t.Fatalf("Expected body: %s; Got: %s", expectedValue, body.String())
 	}
 }
 

@@ -9,7 +9,7 @@ import (
 	"io"
 )
 
-func jsonRequestDecode(r io.ReadCloser, parseInto interface{}) error {
+func jsonRequestDecode(r io.Reader, parseInto interface{}) error {
 	var decoder *json.Decoder
 	var err error
 
