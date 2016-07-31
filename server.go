@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	routerWrapper := newRouterWrapper(
+	routerWrapper := newWrapper(
 		httprouter.New(),
 	)
 
@@ -20,7 +20,7 @@ func main() {
 	setRoutes(routerWrapper)
 
 	// cros_handler.go
-	cors := CORS{routerWrapper.router}
+	cors := CORS{routerWrapper}
 
 	log.Fatal(
 		http.ListenAndServe(":8080", cors),

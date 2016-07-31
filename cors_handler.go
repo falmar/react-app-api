@@ -4,14 +4,10 @@
 
 package main
 
-import (
-	"net/http"
-
-	"github.com/julienschmidt/httprouter"
-)
+import "net/http"
 
 type CORS struct {
-	router *httprouter.Router
+	router http.Handler
 }
 
 func (c CORS) ServeHTTP(w http.ResponseWriter, r *http.Request) {
