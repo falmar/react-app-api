@@ -13,6 +13,10 @@ import (
 )
 
 func main() {
+	serverHandler()
+}
+
+func serverHandler() {
 	routerWrapper := newWrapper(
 		httprouter.New(),
 	)
