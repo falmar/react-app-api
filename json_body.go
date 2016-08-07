@@ -10,12 +10,9 @@ import (
 )
 
 func jsonRequestDecode(r io.Reader, parseInto interface{}) error {
-	var decoder *json.Decoder
 	var err error
 
-	decoder = json.NewDecoder(r)
-
-	err = decoder.Decode(parseInto)
+	err = json.NewDecoder(r).Decode(parseInto)
 
 	if err != nil {
 		return err
@@ -25,12 +22,9 @@ func jsonRequestDecode(r io.Reader, parseInto interface{}) error {
 }
 
 func jsonResponseEncode(w io.Writer, parseFrom interface{}) error {
-	var encoder *json.Encoder
 	var err error
 
-	encoder = json.NewEncoder(w)
-
-	err = encoder.Encode(parseFrom)
+	err = json.NewEncoder(w).Encode(parseFrom)
 
 	if err != nil {
 		return err
