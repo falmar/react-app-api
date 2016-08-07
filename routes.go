@@ -5,6 +5,8 @@
 
 package main
 
-func setRoutes(r *routerWrapper) {
+import "net/http"
 
+func setRoutes(r *routerWrapper) {
+	r.POST("/login", http.HandlerFunc(loginHandler))
 }
