@@ -79,7 +79,7 @@ func TestJSONRequestDecodeError(t *testing.T) {
 	var err error
 	var parseInto interface{}
 
-	body := bytes.NewBuffer([]byte(`{"username": "ops error an here, "name": "who knows"}`))
+	body := bytes.NewBuffer([]byte(`{"username": "ops an error here, "name": "who knows"}`))
 
 	err = jsonRequestDecode(body, &parseInto)
 
