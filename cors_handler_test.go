@@ -68,7 +68,7 @@ func TestCorsOriginFullMethods(t *testing.T) {
 		}
 
 		headerKey = "Access-Control-Allow-Headers"
-		expectedHeader = "Content-Type, Origin"
+		expectedHeader = "Content-Type, Origin, Authorization"
 		if header := responseHeader.Get(headerKey); header != expectedHeader {
 			t.Fatalf(
 				"Expected Header %s Value: %s; Got: %s",
