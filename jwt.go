@@ -7,12 +7,15 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
+var JWT_KEY = []byte(os.Getenv("JWT_KEY"))
+
 type MyClaims struct {
-	User *User `json:"user"`
+	User User `json:"user"`
 	jwt.StandardClaims
 }
 
@@ -36,6 +39,7 @@ func parseToken(tokenString string, claims jwt.Claims, secretKey []byte) (*jwt.T
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
+
 		return secretKey, nil
 	}
 

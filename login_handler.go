@@ -6,7 +6,6 @@ package main
 
 import (
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -46,11 +45,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// set claims to be used by react-app
-	response.Claims.User = &User{Username: request.Username}
+	response.Claims.User = User{Username: request.Username}
 	response.Claims.IssuedAt = time.Now().Unix()
 	response.Claims.ExpiresAt = time.Now().Add(2 * time.Hour).Unix()
 
-	response.Token, _ = generateToken(response.Claims, []byte(os.Getenv("JWT_KEY")))
+	response.Token, _ = generateToken(response.Claims, JWT_KEY)
 
 	jsonResponseEncode(w, response)
 }

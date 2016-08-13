@@ -14,7 +14,7 @@ func (bc badClaim) Valid() error {
 
 func TestGenerateToken(t *testing.T) {
 	claims := MyClaims{
-		User: &User{
+		User: User{
 			Username: "dlavieri",
 		},
 	}
@@ -64,6 +64,16 @@ func TestParseToken(t *testing.T) {
 
 func TestParseTokenBadClaim(t *testing.T) {
 	tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiIn19.e0gV7oUokFgLGn7Ht-0mnmh2b3cOC836i4SPaOV7l1c"
+
+	_, err := parseToken(tokenString, &MyClaims{}, []byte("super-secret"))
+
+	if err == nil {
+		t.Fatal("Expected error to not be nil")
+	}
+}
+
+func TestParseTokenDifferentClaim(t *testing.T) {
+	tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aGluZ3kiOiJub3QgcmVhbGx5IE15Q2xhaW1zIn0.zvyIbzW52Kp74OVMGJsmBa98YTpAfSPf7ZJm08NSZ8c"
 
 	_, err := parseToken(tokenString, &MyClaims{}, []byte("super-secret"))
 
