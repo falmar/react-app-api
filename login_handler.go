@@ -23,6 +23,7 @@ type LoginRequest struct {
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	// set Content-Type
 	w.Header().Set("Content-Type", "application/json")
+
 	// objects to marshal/unmarshal json
 	request := LoginRequest{}
 	response := LoginResponse{}
@@ -45,7 +46,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// set claims to be used by react-app
-	response.Claims.User = User{Username: request.Username}
+	response.Claims.User = &User{Username: request.Username}
 	response.Claims.IssuedAt = time.Now().Unix()
 	response.Claims.ExpiresAt = time.Now().Add(2 * time.Hour).Unix()
 

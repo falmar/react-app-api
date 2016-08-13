@@ -14,7 +14,7 @@ func (bc badClaim) Valid() error {
 
 func TestGenerateToken(t *testing.T) {
 	claims := MyClaims{
-		User: User{
+		User: &User{
 			Username: "dlavieri",
 		},
 	}
