@@ -24,28 +24,24 @@ func checkTokenHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	claims, ok := token.Claims.(*MyClaims)
+	claims := token.Claims.(*MyClaims)
 
-	if ok {
-		iat := time.Since(time.Unix(claims.IssuedAt, 0))
+	iat := time.Since(time.Unix(claims.IssuedAt, 0))
 
-		if iat.Minutes() >= 90 {
-			claims.IssuedAt = time.Now().Unix()
+	if iat.Minutes() >= 90 {
+		claims.IssuedAt = time.Now().Unix()
 
-			tokenString, err = generateToken(claims, JWT_KEY)
+		tokenString, err = generateToken(claims, JWT_KEY)
 
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
-
-		jsonResponseEncode(w, LoginResponse{
-			Claims: *claims,
-			Token:  tokenString,
-		})
-
-		return
 	}
+
+	jsonResponseEncode(w, LoginResponse{
+		Claims: *claims,
+		Token:  tokenString,
+	})
 
 }
