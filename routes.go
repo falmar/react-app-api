@@ -9,4 +9,5 @@ import "net/http"
 
 func setRoutes(r *routerWrapper) {
 	r.POST("/login", http.HandlerFunc(loginHandler))
+	r.GET("/checkToken", http.HandlerFunc(checkTokenHandler))
 }
