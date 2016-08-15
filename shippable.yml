@@ -9,6 +9,7 @@ go:
 
 env:
   - secure: DbgsYIGaIkl5hMROePusAvLg54GBosa3FcWrn40Yi7qUN+CwmsQ7cbFb4zghrmOx4ORqzTLacYXNKdvJBCAWcC+ObRwa6WOHwC80PyKlwzTUZ3lXFI3elGwtY0+P1tQAkF19mcwy3SuRA6nOuNVGHoZeGhoA8H1q7kwOYYgTXxanQs7TJL17JJv1Ha1MxEktVnEqCRj0Q4uSvIcVx0uOu0skYpHNESIowt9RjBGeYHLYmb5nQDUW4qRGju8Zm4XC2tyWhPirISasG8JI2/kHEKKzs6jweg+L6D9Sc8o3SzASOUHymq6Wbl3YSOM003M1CY4A3EKAb7c42skvnLgTAg==
+  - JWT_KEY: 'super-secret :D'
 
 build:
    ci:

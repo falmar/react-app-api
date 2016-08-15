@@ -6,8 +6,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -27,7 +29,11 @@ func serverHandler() {
 	// cros_handler.go
 	cors := CORS{routerWrapper}
 
+	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+
+	log.Println("Serving on port", port)
+
 	log.Fatal(
-		http.ListenAndServe(":8080", cors),
+		http.ListenAndServe(port, cors),
 	)
 }
