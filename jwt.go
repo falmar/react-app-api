@@ -12,13 +12,15 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-var JWT_KEY = []byte(os.Getenv("JWT_KEY"))
+var jwtKey = []byte(os.Getenv("JWT_KEY"))
 
+// MyClaims custom claim to use in this app
 type MyClaims struct {
 	User User `json:"user"`
 	jwt.StandardClaims
 }
 
+// Valid implement interface jwt.Claims
 func (mc MyClaims) Valid() error {
 	if mc.User.Username == "" {
 		return errors.New("User's name can not be empty")

@@ -17,7 +17,7 @@ func checkTokenHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := parseToken(tokenString, &MyClaims{}, JWT_KEY)
+	token, err := parseToken(tokenString, &MyClaims{}, jwtKey)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
@@ -31,7 +31,7 @@ func checkTokenHandler(w http.ResponseWriter, r *http.Request) {
 	if iat.Minutes() >= 90 {
 		claims.IssuedAt = time.Now().Unix()
 
-		tokenString, err = generateToken(claims, JWT_KEY)
+		tokenString, err = generateToken(claims, jwtKey)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

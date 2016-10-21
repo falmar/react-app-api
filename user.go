@@ -4,6 +4,7 @@
 
 package main
 
+// User basic struct for an user
 type User struct {
 	Username string `json:"username"`
 	password string

@@ -9,11 +9,13 @@ import (
 	"time"
 )
 
+// LoginResponse response given to request
 type LoginResponse struct {
 	Claims MyClaims `json:"claims"`
 	Token  string   `json:"token"`
 }
 
+// LoginRequest incoming request
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -49,7 +51,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	response.Claims.IssuedAt = time.Now().Unix()
 	response.Claims.ExpiresAt = time.Now().Add(2 * time.Hour).Unix()
 
-	response.Token, _ = generateToken(response.Claims, JWT_KEY)
+	response.Token, _ = generateToken(response.Claims, jwtKey)
 
 	jsonResponseEncode(w, response)
 }

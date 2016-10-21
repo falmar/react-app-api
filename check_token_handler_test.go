@@ -27,7 +27,7 @@ func TestCheckTokenSuccess(t *testing.T) {
 		User: User{Username: "dlavieri"},
 	}
 	claims.IssuedAt = time.Now().Unix()
-	token, err := generateToken(claims, JWT_KEY)
+	token, _ := generateToken(claims, jwtKey)
 
 	// set token query param
 	params := url.Values{}
@@ -101,7 +101,7 @@ func TestCheckTokenRefresh(t *testing.T) {
 		User: User{Username: "dlavieri"},
 	}
 	claims.IssuedAt = time.Now().Add(time.Minute * -90).Unix()
-	token, err := generateToken(claims, JWT_KEY)
+	token, _ := generateToken(claims, jwtKey)
 
 	// set token query param
 	params := url.Values{}
@@ -170,7 +170,7 @@ func TestCheckTokenBadClaims(t *testing.T) {
 		"thingy": "not really MyClaims",
 	}
 
-	token, err := generateToken(claims, JWT_KEY)
+	token, _ := generateToken(claims, jwtKey)
 
 	// set token query param
 	params := url.Values{}

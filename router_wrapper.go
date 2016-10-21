@@ -5,6 +5,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -46,7 +47,9 @@ func (rw routerWrapper) DELETE(path string, h http.Handler) {
 // Wrap julien's httprouter.Handle inject params to a context
 func (rw routerWrapper) wrapHandler(h http.Handler) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		h.ServeHTTP(w, r)
+		ctx := context.WithValue(r.Context(), "params", ps)
+
+		h.ServeHTTP(w, r.WithContext(ctx))
 	}
 }
 

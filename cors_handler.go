@@ -6,6 +6,7 @@ package main
 
 import "net/http"
 
+// CORS type implement http.Handler
 type CORS struct {
 	router http.Handler
 }
